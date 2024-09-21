@@ -1,8 +1,8 @@
-# [Game Name] 🎯
+# [Target Tap] 🎯
 A fast-paced, action-packed 2D tapping game built using the Unity engine. Your mission is to tap and deactivate targets as they spawn across the screen, scoring points and avoiding bombs along the way. How long can you survive?
 
 ## 📖 Overview
-In [Game Name], you must rely on your reflexes and quick thinking to tap various targets as they spawn. Each target has different behaviors and point values, making every round unique. Watch out for bombs and time targets to keep your game going!
+In [Target Tap], you must rely on your reflexes and quick thinking to tap various targets as they spawn. Each target has different behaviors and point values, making every round unique. Watch out for bombs and time targets to keep your game going!
 
 ## 🎮 Gameplay Features
 - **Normal Targets**: Basic targets that give you points when tapped.
@@ -54,4 +54,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For any inquiries, reach out to me via [GitHub](https://github.com/mxg-mega).
 
 ---
-Enjoy playing [Game Name] and happy tapping!
+Enjoy playing [Target Tap] and happy tapping!
