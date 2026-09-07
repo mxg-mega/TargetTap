@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] public float DefaultGamePlayDuration { get; set; }
+    public float DefaultGamePlayDuration { get; set; }
     private float elaspedTime;
 
     [SerializeField] private TextMeshProUGUI timerText;

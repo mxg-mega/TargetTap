@@ -4,9 +4,20 @@ using UnityEngine;
 
 public class TimeTarget : Target
 {
-    private void Awake()
+    private Camera cachedCamera;
+    private float screenBottomY;
+
+    protected override void Awake()
     {
         ScoreValue = 0;
+        base.Awake();
+        cachedCamera = Camera.main;
+        
+        // Cache the world coordinate equivalent of the bottom of the screen once
+        if (cachedCamera != null)
+        {
+            screenBottomY = cachedCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
+        }
     }
 
     public override void OnTapped()

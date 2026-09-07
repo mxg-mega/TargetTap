@@ -1,65 +1,46 @@
-using System.Collections;
 using UnityEngine;
 
 public class MovingTarget : Target
 {
-    [SerializeField] private float speed = 7;
+    [SerializeField] private float speed = 7f;
+    private Camera cachedCamera;
+    private float screenBottomY;
 
-    private void Awake()
+    protected override void Awake()
     {
-        ScoreValue = 2;
-        Duration = 50.0f;
+        base.Awake();
+        cachedCamera = Camera.main;
+        
+        // Cache the world coordinate equivalent of the bottom of the screen once
+        if (cachedCamera != null)
+        {
+            screenBottomY = cachedCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y;
+        }
     }
 
-    /*private void Update()
+    public override void OnSpawnTarget(int scoreValue = 2)
     {
-        Vector2 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-        if (screenPosition.x < (Screen.width / 0.1))
-        {
-            transform.Translate(speed * Time.deltaTime * Vector2.left);
-        }
-        else if (screenPosition.y < (Screen.height / 0.1))
-        {
-            transform.Translate(speed * Time.deltaTime * Vector2.up);
-        }
-        else
-        {
-            transform.Translate(speed * Time.deltaTime * Vector2.up);
-        }
-
-        if (CheckOutOfBound())
-        {
-            TargetPoolerManager.Instance.ReturnPooledTarget(gameObject);
-        }
-    }*/
-
-    public override void OnSpawnTarget(int scoreValue)
-    {
-        base.OnSpawnTarget(2);
-        StartCoroutine(MoveTarget());
+        // Bypass the base timer rule entirely if moving targets only despawn when falling off-screen
+        base.OnSpawnTarget(scoreValue);
+        Duration = 999f; 
     }
+
     public void SetSpeed(float modifiedSpeed)
     {
         speed = modifiedSpeed;
     }
-    IEnumerator MoveTarget()
-    {
-        while (gameObject.activeSelf)
-        {
-            transform.Translate(speed * Time.deltaTime * Vector2.down);
 
-            if (CheckOutOfBound())
-            {
-                TargetPoolerManager.Instance.ReturnPooledTarget(gameObject);
-            }
-            yield return null;
+    protected override void Update()
+    {
+        base.Update(); // Keeps the safety timer running if you want it
+
+        // Direct hardware transform step - highly performant
+        transform.Translate(speed * Time.deltaTime * Vector2.down);
+
+        // Quick, inexpensive float comparison instead of full WorldToScreen projection loops
+        if (transform.position.y < screenBottomY - 1f)
+        {
+            TargetPoolerManager.Instance.ReturnPooledTarget(gameObject);
         }
     }
-    
-    private bool CheckOutOfBound()
-    {
-        Vector2 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-        return screenPosition.x > Screen.width || screenPosition.y > Screen.height || screenPosition.x < 0 || screenPosition.y < 0;
-    }
-
 }
